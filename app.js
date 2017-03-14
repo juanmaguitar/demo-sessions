@@ -21,25 +21,29 @@ app.use(session({
 }));
 
 app.use( (req, res, next) => {
+  const cart = req.session.cart = req.session.cart || {}
+  if ( cart._locals ) delete cart._locals
   console.log('req.session => ', req.session);
   next();
 });
 
 app.get('/cart', (req,res) => {
-  res.json(req.session.cart)
+  cart = req.session.cart
+  res.render('index', cart)
 })
 
-app.post('/cart', (req,res) => {
+app.route('/api/cart')
+  .get( (req,res) => res.json(req.session.cart) )
+  .post( (req,res) => {
+    let { product, quantity } = req.body
+    quantity = +quantity
 
-  let { product, quantity } = req.body
-  quantity = +quantity
+    let cart = req.session.cart
 
-  let cart = req.session.cart = req.session.cart || {}
+    if (cart[product]) cart[product] += quantity
+    else cart[product] = quantity
 
-  if (cart[product]) cart[product] += quantity
-  else cart[product] = quantity
-
-  res.json(cart)
-})
+    res.json(cart)
+  })
 
 app.listen(PORT, () => console.log(`Listening on PORT ${PORT}`) )

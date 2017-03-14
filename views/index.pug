@@ -3,5 +3,53 @@ html(lang='en')
   head
     meta(charset='utf-8')
     title foo
-  body.html2pug
-    h1 bar
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
+  body
+    .container
+      .row
+        .col-md-6.col-md-offset-3
+          .row
+            form(action="")
+              div.form-group.col-md-6
+                label(for="product") Product
+                input#email.form-control(type="text", name="product")
+              div.form-group.col-md-6
+                label(for="quantity") Quantity
+                input#email.form-control(type="number", name="quantity")
+              button.pull-right(type="submit") Add to Cart
+
+          if cart
+            ul#cart
+              each quantity, product in cart
+                if product != "_locals"
+                  li
+                    strong= JSON.stringify(quantity)
+                    |  → #{ product }
+
+          else
+            p No products in the cart
+
+    script(src="https://code.jquery.com/jquery-2.0.3.min.js")
+    script(type='text/javascript').
+
+      $('form').on('submit', (e) => {
+
+        e.preventDefault()
+
+        const url = '/api/cart'
+        const method = 'POST'
+
+        const product = $('[name="product"]').val()
+        const quantity =  +$('[name="quantity"]').val()
+        const data = `product=${product}&quantity=${quantity}`
+
+        $.ajax({ url, method, data })
+          .then( cart => {
+            let updatedList = ''
+            for (let product in cart) {
+              updatedList += `<li><strong>${cart[product]}</strong> → ${product}</<li>`
+            }
+            $("#cart").html( updatedList )
+          })
+
+      })

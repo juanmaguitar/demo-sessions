@@ -17,7 +17,9 @@ We have two endpoints:
 - `[POST]` `/api/cart` → Add items to cart
 - `[GET]` `/api/cart` → Show content of the cart
 
-So, to add items to the cart...
+### With `http`
+
+To add items to the cart...
 ```
 $ http --session=my --form POST localhost:4000/api/cart product='macbook' quantity=5
 HTTP/1.1 200 OK
@@ -47,9 +49,9 @@ X-Powered-By: Express
 }
 ```
 
-And to check the content of the cart...
+To check the content of the cart...
 ```
-$ http --session=my localhost:4000/cart
+$ http --session=my localhost:4000/api/cart
 HTTP/1.1 200 OK
 Connection: keep-alive
 Content-Length: 14
@@ -61,4 +63,102 @@ X-Powered-By: Express
 {
     "macbook": 10
 }
+```
+
+### With `curl`
+
+To add items to the cart...
+```
+$ curl --cookie-jar mycookie --data "product=macbook&quantity=5" localhost:4000/api/cart
+{"macbook":5}
+
+$ curl --cookie mycookie --data "product=macbook&quantity=5" localhost:4000/api/cart
+{"macbook":10}
+
+$ curl --cookie mycookie --data "product=macbook&quantity=5" localhost:4000/api/cart
+{"macbook":15}
+```
+
+To check the content of the cart...
+
+```
+$ curl --cookie mycookie localhost:4000/api/cart
+{"macbook":15}
+```
+
+If we check the file stored in the folder `sessions` we can see...
+
+```
+{
+  "cookie": {
+    "originalMaxAge": null,
+    "expires": null,
+    "httpOnly": true,
+    "path": "/"
+  },
+  "cart": {
+    "macbook": 15
+  },
+  "__lastAccess": 1489440572520
+}
+```
+
+If we don't specify any cookie we cannot access the session info
+
+```
+$ curl localhost:4000/api/cart
+```
+
+(nothing is returned)
+
+### From browser
+
+#### Step 1: First GET to `/cart`
+
+Request Headers
+```
+GET /cart HTTP/1.1
+Host: localhost:4000
+...
+```
+
+**Response** Headers
+```
+HTTP/1.1 200 OK
+...
+set-cookie: jm-server-session-cookie-id=s%3ASYQXdeouoy6XWukqgE8hri3C2G1UC3n5.11TB3gofVIHTUdEq5ic1SRcUyZT7nUVLQkY%2Bh9gYMr8; Path=/; HttpOnly
+...
+```
+
+Content of file in `sessions` folder
+```
+{
+  "cookie": {
+    "originalMaxAge": null,
+    "expires": null,
+    "httpOnly": true,
+    "path": "/"
+  },
+  "cart": {
+    "_locals": {}
+  },
+  "__lastAccess": 1489443467063
+}
+```
+
+#### Step 2: POST to `/cart`
+
+**Request** Headers
+```
+POST /api/cart HTTP/1.1
+Host: localhost:4000
+...
+Cookie: jm-server-session-cookie-id=s%3AlVOfNnRhYjirh2_jHmmdEaD2S6V0L7Sq.ph8qE2RNYHuDi3QtJJh8e5%2BEIxFFa1on4sSlIxxDOmM
+...
+```
+
+Form Data
+```
+product:coke
+quantity:8
 ```
