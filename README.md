@@ -162,3 +162,19 @@ Form Data
 product:coke
 quantity:8
 ```
+
+Content of file in `sessions` folder
+```
+{
+  "cookie": {
+    "originalMaxAge": null,
+    "expires": null,
+    "httpOnly": true,
+    "path": "/"
+  },
+  "cart": {
+    "coke": 8
+  },
+  "__lastAccess": 1489474746588
+}
+```
