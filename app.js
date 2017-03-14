@@ -1,7 +1,7 @@
 const express = require('express')
 const session = require('express-session')
 const bodyParser = require('body-parser')
-var FileStore = require('session-file-store')(session);
+const FileStore = require('session-file-store')(session);
 
 const app = express()
 
@@ -27,23 +27,31 @@ app.use( (req, res, next) => {
   next();
 });
 
-app.get('/cart', (req,res) => {
-  cart = req.session.cart
-  res.render('index', cart)
-})
+app.route('/cart')
+  .get( ({ session: { cart }},res) => res.render('index', { cart }) )
+  .post( (req,res) => {
+    const cart = addToCart(req)
+    res.render('index', { cart })
+  })
 
 app.route('/api/cart')
   .get( (req,res) => res.json(req.session.cart) )
   .post( (req,res) => {
-    let { product, quantity } = req.body
-    quantity = +quantity
-
-    let cart = req.session.cart
-
-    if (cart[product]) cart[product] += quantity
-    else cart[product] = quantity
-
+    const cart = addToCart(req)
     res.json(cart)
   })
+
+function addToCart(req) {
+  let { product, quantity } = req.body
+  quantity = +quantity
+
+  let cart = req.session.cart
+
+  if (cart[product]) cart[product] += quantity
+  else cart[product] = quantity
+
+  return cart
+}
+
 
 app.listen(PORT, () => console.log(`Listening on PORT ${PORT}`) )

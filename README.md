@@ -12,8 +12,13 @@ To run the app you can just do `npm run dev`
 
 ## Testing the app
 
-We have two endpoints:
+We have 4 endpoints:
 
+**HTML**
+- `[GET]` `/cart` → Renders am html w/ cart content & some js behaviour to update cart
+- `[POST]` `/cart` → Process POST and return rendered html w/ last status of cart
+
+**JSON**
 - `[POST]` `/api/cart` → Add items to cart
 - `[GET]` `/api/cart` → Show content of the cart
 
@@ -113,7 +118,7 @@ $ curl localhost:4000/api/cart
 
 ### From browser
 
-#### Step 1: First GET to `/cart`
+#### Step 1: First GET to `/cart` (html)
 
 Request Headers
 ```
