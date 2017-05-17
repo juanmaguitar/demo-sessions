@@ -69,7 +69,7 @@ X-Powered-By: Express
     "macbook": 10
 }
 ```
-
+  
 ### With `curl`
 
 To add items to the cart...
@@ -115,9 +115,9 @@ $ curl localhost:4000/api/cart
 ```
 
 (nothing is returned)
-
+  
 ### From browser
-
+  
 #### Step 1: First GET to `/cart` (html)
 
 Request Headers
@@ -150,7 +150,7 @@ Content of file in `sessions` folder
   "__lastAccess": 1489443467063
 }
 ```
-
+  
 #### Step 2: POST to `/cart`
 
 **Request** Headers
