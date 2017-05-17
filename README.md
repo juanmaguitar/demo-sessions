@@ -70,7 +70,7 @@ X-Powered-By: Express
 }
 ```
   
-### With `curl`
+### With `curl`
 
 To add items to the cart...
 ```
@@ -114,9 +114,9 @@ If we don't specify any cookie we cannot access the session info
 $ curl localhost:4000/api/cart
 ```
 
-(nothing is returned)
+(nothing is returned)  
   
-### From browser
+### From browser  
   
 #### Step 1: First GET to `/cart` (html)
 
