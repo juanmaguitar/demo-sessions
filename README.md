@@ -21,8 +21,8 @@ We have 4 endpoints:
 **JSON**
 - `[POST]` `/api/cart` → Add items to cart
 - `[GET]` `/api/cart` → Show content of the cart
-
-### With `http`
+  
+### With `http`
 
 To add items to the cart...
 ```
