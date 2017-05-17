@@ -25,7 +25,7 @@ We have 4 endpoints:
 ### With `http`
 
 To add items to the cart...
-```
+```bash
 $ http --session=my --form POST localhost:4000/api/cart product='macbook' quantity=5
 HTTP/1.1 200 OK
 Connection: keep-alive
@@ -55,7 +55,7 @@ X-Powered-By: Express
 ```
 
 To check the content of the cart...
-```
+```bash
 $ http --session=my localhost:4000/api/cart
 HTTP/1.1 200 OK
 Connection: keep-alive
@@ -73,7 +73,7 @@ X-Powered-By: Express
 ### With `curl`
 
 To add items to the cart...
-```
+```bash
 $ curl --cookie-jar mycookie --data "product=macbook&quantity=5" localhost:4000/api/cart
 {"macbook":5}
 
@@ -86,14 +86,14 @@ $ curl --cookie mycookie --data "product=macbook&quantity=5" localhost:4000/api/
 
 To check the content of the cart...
 
-```
+```bash
 $ curl --cookie mycookie localhost:4000/api/cart
 {"macbook":15}
 ```
 
 If we check the file stored in the folder `sessions` we can see...
 
-```
+```javascript
 {
   "cookie": {
     "originalMaxAge": null,
@@ -110,14 +110,14 @@ If we check the file stored in the folder `sessions` we can see...
 
 If we don't specify any cookie we cannot access the session info
 
-```
+```bash
 $ curl localhost:4000/api/cart
 ```
 
-(nothing is returned)  
-  
-### From browser  
-  
+(nothing is returned)
+
+### From Browser
+
 #### Step 1: First GET to `/cart` (html)
 
 Request Headers
@@ -136,7 +136,7 @@ set-cookie: jm-server-session-cookie-id=s%3ASYQXdeouoy6XWukqgE8hri3C2G1UC3n5.11T
 ```
 
 Content of file in `sessions` folder
-```
+```javascript
 {
   "cookie": {
     "originalMaxAge": null,
@@ -154,7 +154,7 @@ Content of file in `sessions` folder
 #### Step 2: POST to `/cart`
 
 **Request** Headers
-```
+```bash
 POST /api/cart HTTP/1.1
 Host: localhost:4000
 ...
@@ -163,13 +163,13 @@ Cookie: jm-server-session-cookie-id=s%3AlVOfNnRhYjirh2_jHmmdEaD2S6V0L7Sq.ph8qE2R
 ```
 
 Form Data
-```
+```bash
 product:coke
 quantity:8
 ```
 
 Content of file in `sessions` folder
-```
+```javascript
 {
   "cookie": {
     "originalMaxAge": null,
